@@ -1,5 +1,6 @@
 const express = require ('express');
 const mongoose = require("mongoose");
+const TodoItem = require('./models/todoItem.model');
 const app = express();
 
 
