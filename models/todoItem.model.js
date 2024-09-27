@@ -16,7 +16,7 @@ const TodoItemSchema = mongoose.Schema(
         },
         "date":{
             type: Date,
-            required: trusted
+            required: true
         },
         "status":{
             type: String,
