@@ -13,12 +13,22 @@ app.use(express.json());
 
 
 //Create Todo items
-app.post('/api/todoitems',async (req,res)=>{
+app.post('/api/todoitems', async (req,res)=>{
     try{
         const todoItem = await TodoItem.create(req.body);
         res.status(200).json(todoItem);
     }catch(error){
         res.status(500).json({message: error.message})
+    }
+});
+
+//Get all todos
+app.get('/api/todoitems', async (req,res)=>{
+    try{
+        const todoItems = await TodoItem.find({});
+        res.status(200).json(todoItems);
+    }catch(error){
+        res.status(500).json({message: error.message});
     }
 });
 
