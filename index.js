@@ -11,7 +11,6 @@ app.get("/",(req,res)=>[
 //Middleware
 app.use(express.json());
 
-
 //Create Todo items
 app.post('/api/todoitems', async (req,res)=>{
     try{
@@ -19,6 +18,16 @@ app.post('/api/todoitems', async (req,res)=>{
         res.status(200).json(todoItem);
     }catch(error){
         res.status(500).json({message: error.message})
+    }
+});
+
+//Get all todos
+app.get('/api/todoitems', async (req,res)=>{
+    try{
+        const todoItems = await TodoItem.find({});
+        res.status(200).json(todoItems);
+    }catch(error){
+        res.status(500).json({message: error.message});
     }
 });
 
@@ -37,17 +46,20 @@ app.put('/api/todoitem/:id', async(req,res)=>{
     }
 });
 
-
-//Get all todos
-app.get('/api/todoitems', async (req,res)=>{
+//Delete Todo item
+app.delete('/api/todoitem/:id', async (req,res)=>{
     try{
-        const todoItems = await TodoItem.find({});
-        res.status(200).json(todoItems);
+        const {id} = req.params;
+        const todoitem = await TodoItem.findByIdAndDelete(id);
+        if(!todoitem){
+            return res.status(404).json({message: "Todo item is not Found"});
+        }
+        res.status(200).json({message: "Todo item deleted successfully"});
     }catch(error){
+        console.log("ERROR")
         res.status(500).json({message: error.message});
     }
 });
-
 
 //Connect Mongodb Database
 mongoose.connect("mongodb+srv://sathyangitodoapp:ZiH6We8VeQGHG8k6@todo-app.iglmv.mongodb.net/Todo-App?retryWrites=true&w=majority&appName=Todo-App")
