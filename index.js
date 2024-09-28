@@ -22,6 +22,22 @@ app.post('/api/todoitems', async (req,res)=>{
     }
 });
 
+//Update Todo item
+app.put('/api/todoitem/:id', async(req,res)=>{
+    try{
+        const {id} = req.params;
+        const todoitem = await TodoItem.findByIdAndUpdate(id, req.body);
+        if(!todoitem){
+            return res.status(404).json({message: "Todo Item is not Found"});
+        }
+        const updatedTodoItem = await TodoItem.findById(id);
+        res.status(200).json(updatedTodoItem);
+    }catch(erroe){
+        res.status(500).json({message: erroe.message});
+    }
+});
+
+
 //Get all todos
 app.get('/api/todoitems', async (req,res)=>{
     try{
